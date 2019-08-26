@@ -65,6 +65,8 @@ class UserProfileViewset(viewsets.ModelViewSet):
 class HomeApiViewset(viewsets.ViewSet):
     """Test API viewsets"""
 
+    serializer_class = HomeSerializer
+
     def list(self, request):
         """Return a message"""
 
@@ -78,6 +80,53 @@ class HomeApiViewset(viewsets.ViewSet):
             'message': 'Testing viewsets',
             'a_viewset': a_viewset
         })
+
+    def create(self, request):
+        """Creating a new message"""
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            name = serializer.validated_data.get('name')
+            message = f'Hello {name}'
+
+            return Response({
+                'message': message
+            })
+
+        else:
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+    def retrieve(self, request, pk=None):
+        """Handles querying messages by id"""
+
+        return Response({
+            'http_method': 'GET'
+        })
+
+    def update(self, request, pk=None):
+        """Handles updating messages with id"""
+        return Response({
+            'http_method': 'PUT'
+        })
+
+    def patch(self, request, pk=None):
+        """ Handles updating part of an object"""
+        return Response({
+            'http_method': 'PATCH'
+        })
+
+    def destroy(self, request, pk=None):
+        """Handles remove object """
+        return Response({
+            'http_method': 'DELETE'
+        })
+
+
+
+
 
 
 
