@@ -1,7 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import HomeSerializer
+from rest_framework import viewsets
+from .serializers import HomeSerializer, UserProfileSerializer
+from .models import UserProfile
 
 class HomeApiView(APIView):
     """ Testing API View """
@@ -54,7 +56,28 @@ class HomeApiView(APIView):
         """Handles deleting of objects"""
         return Response({'method': 'DELETE'})
 
+class UserProfileViewset(viewsets.ModelViewSet):
+    """Handles creating and updating profiles"""
+    serializer_class = UserProfileSerializer
+    queryset = UserProfile.objects.all()
 
+
+class HomeApiViewset(viewsets.ViewSet):
+    """Test API viewsets"""
+
+    def list(self, request):
+        """Return a message"""
+
+        a_viewset = [
+            'uses actions',
+            'maps automatically',
+            'provides more functionality'
+        ]
+
+        return Response({
+            'message': 'Testing viewsets',
+            'a_viewset': a_viewset
+        })
 
 
 
