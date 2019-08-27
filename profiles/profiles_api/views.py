@@ -2,8 +2,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
-from .serializers import HomeSerializer, UserProfileSerializer
+from rest_framework.authentication import TokenAuthentication
+
+from .serializers import HomeSerializer, UserProfileSerializer, StudentProfileSerializer
 from .models import UserProfile
+from .permissions import UpdateOwnProfile
+
 
 class HomeApiView(APIView):
     """ Testing API View """
@@ -123,6 +127,17 @@ class HomeApiViewset(viewsets.ViewSet):
         return Response({
             'http_method': 'DELETE'
         })
+
+class StudentProfileViewset(viewsets.ModelViewSet):
+    """ Handles updating and creating student profiles"""
+
+    serializer_class = StudentProfileSerializer
+
+    queryset = UserProfile.objects.all()
+
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (UpdateOwnProfile,)
+
 
 
 
