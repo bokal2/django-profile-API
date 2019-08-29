@@ -8,5 +8,6 @@ router.register('profile', views.StudentProfileViewset, base_name='profile')
 
 urlpatterns = [
     path('test/', views.HomeApiView.as_view()),
+    path('login/', views.UserLoginApiView.as_view()),
     path('', include(router.urls))
 ]
